@@ -7,12 +7,21 @@ import java.util.Date;
 public class Member {
 
     @Id     // PK
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "USERNAME")
+    private String userName;
 
-    private Integer age;
+//    @Column(name = "TEAM_ID")
+//    private Long teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
+    /*private Integer age;
 
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
@@ -27,8 +36,37 @@ public class Member {
     private String description;
 
     public Member() {
+    }*/
+
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String username) {
+        this.userName = username;
+    }
+
+    /*public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
+    }*/
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 }

@@ -24,6 +24,20 @@ public class JpaMain {
 //                    .setMaxResults(8)
 //                    .getResultList();
 
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUserName("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+            System.out.println("findMember = " + findMember);
+            System.out.println("findTeam = " + findTeam);
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
