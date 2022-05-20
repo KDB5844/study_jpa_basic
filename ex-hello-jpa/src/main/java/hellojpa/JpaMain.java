@@ -28,23 +28,27 @@ public class JpaMain {
             team.setName("TeamA");
             em.persist(team);
 
+            // 연관관계의 주인이 아님 INSERT 안됨
+//            team.getMembers().add(member);
+
             Member member = new Member();
             member.setUserName("member1");
+            // 연관 관계의 주인에게 set
             member.setTeam(team);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-
-            List<Member> members = findMember.getTeam().getMembers();
-
-            System.out.println(" ========================= ");
-
-            for (Member member1 : members) {
-                System.out.println("member1.getUserName() = " + member1.getUserName());
-            }
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            System.out.println("findMember = " + findMember.getUserName());
+//
+//            List<Member> members = findMember.getTeam().getMembers();
+//
+//            for (Member m : members) {
+//                System.out.println("m = " + m.getUserName());
+//            }
 
             tx.commit();
         } catch (Exception e) {
