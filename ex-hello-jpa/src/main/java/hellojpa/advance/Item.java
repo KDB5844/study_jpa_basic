@@ -3,8 +3,11 @@ package hellojpa.advance;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Item {
+//@Inheritance(strategy = InheritanceType.JOINED) // 조인 전략
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 단일테이블 전략 default
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) //  구현 클래스마다 테이블 전략
+@DiscriminatorColumn
+public abstract class Item {
 
     @Id
     @GeneratedValue
@@ -13,8 +16,6 @@ public class Item {
     private String name;
 
     private int price;
-
-    private Dtype dtype;
 
     public Long getId() {
         return id;
@@ -40,11 +41,4 @@ public class Item {
         this.price = price;
     }
 
-    public Dtype getDtype() {
-        return dtype;
-    }
-
-    public void setDtype(Dtype dtype) {
-        this.dtype = dtype;
-    }
 }

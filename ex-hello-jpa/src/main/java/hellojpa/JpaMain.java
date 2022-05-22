@@ -26,8 +26,8 @@ public class JpaMain {
 
             em.persist(movie);
 
-            em.clear();
             em.flush();
+            em.clear();
 
             Movie findMovie = em.find(Movie.class, movie.getId());
 
