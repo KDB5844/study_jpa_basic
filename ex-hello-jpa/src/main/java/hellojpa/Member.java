@@ -1,10 +1,11 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity{
 
     @Id     // PK
     @GeneratedValue
@@ -14,29 +15,9 @@ public class Member {
     @Column(name = "USERNAME")
     private String userName;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
-
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
-
-    /*private Integer age;
-
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-
-    @Lob
-    private String description;
-
-    public Member() {
-    }*/
 
     public Long getId() {
         return id;
@@ -53,14 +34,6 @@ public class Member {
     public void setUserName(String username) {
         this.userName = username;
     }
-
-    /*public Long getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
-    }*/
 
     public Team getTeam() {
         return team;
