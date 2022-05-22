@@ -1,8 +1,6 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 public class Member extends BaseEntity{
@@ -40,7 +38,7 @@ public class Member extends BaseEntity{
     }
 
     public void changeTeam(Team team) {
-        this.team = team;
         team.getMembers().add(this);        // 연관관계 매핑 - 순수 객체 상태를 고려해서 항상 양쪽에 값을 설정
+        this.team = team;
     }
 }
