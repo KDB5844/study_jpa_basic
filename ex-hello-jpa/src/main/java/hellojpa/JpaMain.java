@@ -1,5 +1,7 @@
 package hellojpa;
 
+import hellojpa.advance.Movie;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -15,39 +17,19 @@ public class JpaMain {
         tx.begin();
 
         try{
-//            Member findMember = em.find(Member.class, 1L);
-//            findMember.setName("HelloJPA");
 
-//            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-//                    .setFirstResult(5)
-//                    .setMaxResults(8)
-//                    .getResultList();
+            Movie movie = new Movie();
+            movie.setDirector("directorA");
+            movie.setActor("actorA");
+            movie.setName("바람과 함께 사라지다");
+            movie.setPrice(10000);
 
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
+            em.persist(movie);
 
-            // 연관관계의 주인이 아님 INSERT 안됨
-//            team.getMembers().add(member);
-
-            Member member = new Member();
-            member.setUserName("member1");
-            // 연관 관계의 주인에게 set
-            member.changeTeam(team);
-            em.persist(member);
-
-            em.flush();
             em.clear();
+            em.flush();
 
-//            Member findMember = em.find(Member.class, member.getId());
-//
-//            System.out.println("findMember = " + findMember.getUserName());
-//
-//            List<Member> members = findMember.getTeam().getMembers();
-//
-//            for (Member m : members) {
-//                System.out.println("m = " + m.getUserName());
-//            }
+            Movie findMovie = em.find(Movie.class, movie.getId());
 
             tx.commit();
         } catch (Exception e) {
