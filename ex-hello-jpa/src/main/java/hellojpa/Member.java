@@ -1,9 +1,13 @@
 package hellojpa;
 
+import hellojpa.embedded.Address;
+import hellojpa.embedded.Period;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member {
 
     @Id     // PK
     @GeneratedValue
@@ -16,6 +20,12 @@ public class Member extends BaseEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @Embedded
+    private Period workPeriod;
+
+    @Embedded
+    private Address homeAddress;
 
     public Long getId() {
         return id;
@@ -40,5 +50,25 @@ public class Member extends BaseEntity{
     public void changeTeam(Team team) {
         team.getMembers().add(this);        // 연관관계 매핑 - 순수 객체 상태를 고려해서 항상 양쪽에 값을 설정
         this.team = team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
     }
 }
