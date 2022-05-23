@@ -18,19 +18,13 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Book book = new Book();
-            book.setId(1L);
-            book.setName("JPA");
-            book.setAuthor("영하니형");
-
-            em.persist(book);
 
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
-            em.close();
-        } finally {
             tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
         }
         emf.close();
 
