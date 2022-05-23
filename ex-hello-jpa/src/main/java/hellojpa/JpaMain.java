@@ -16,13 +16,13 @@ public class JpaMain {
 
         try{
 
-//            Team team = new Team();
-//            team.setName("teamA");
-//            em.persist(team);
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
             Member member = new Member();
             member.setUserName("kim");
-//            member.changeTeam(team);
+            member.changeTeam(team);
             em.persist(member);
 
             em.flush();
@@ -32,9 +32,10 @@ public class JpaMain {
 //            System.out.println("member id = " + findMember.getId());
 //            System.out.println("member name = " + findMember.getUserName());
 
-            Member findMember = em.getReference(Member.class, member.getId());
-
-             printMember(findMember);
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+            System.out.println("team = " + findTeam);
+            printMember(findMember);
             // printMemberAndTeam(findMember);
 
             tx.commit();
