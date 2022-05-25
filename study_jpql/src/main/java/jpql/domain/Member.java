@@ -10,6 +10,14 @@ public class Member {
     private String username;
     private int age;
 
+    public Member(String username, int age) {
+        this.username = username;
+        this.age = age;
+    }
+
+    public Member() {
+    }
+
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
@@ -36,5 +44,14 @@ public class Member {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
