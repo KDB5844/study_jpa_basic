@@ -4,12 +4,6 @@ import hellojpa.Member;
 import hellojpa.template.JpaTemplate;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class NativeQueryEx1 {
@@ -19,20 +13,19 @@ public class NativeQueryEx1 {
         JpaTemplate jpaTemplate = new JpaTemplate() {
             @Override
             public void execute(EntityManager em) {
-                // Criteria 사용 준비
-                CriteriaBuilder cb = em.getCriteriaBuilder();
-                CriteriaQuery<Member> cq = cb.createQuery(Member.class);
 
-                Root<Member> m = cq.from(Member.class);
+                Member member = new Member();
+                member.setUserName("member1");
+                em.persist(member);
 
-                cq.select(m).where(cb.equal(m.get("userName"), "kim"));
-                List<Member> result = em.createQuery(cq)
+                // flush -> commit, query , JPA 기술이 아닌 DB connection을 얻어와서 쿼리조회 시 flush가 안됨(수동 Flush필요)
+
+                System.out.println("=========START======== ");
+                List<Member> resultList = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME from MEMBER ", Member.class)
                         .getResultList();
+                System.out.println("=========END======== ");
 
-                String username = "test";
-                if (username != null) {
-                    cq = cq.select(m).where(cb.equal(m.get("userName"), username));
-                }
+                System.out.println("resultList size = " + resultList.size());
             }
         };
 
