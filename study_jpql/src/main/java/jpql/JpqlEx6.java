@@ -1,4 +1,4 @@
-package jpql.dto;
+package jpql;
 
 import jpql.domain.Member;
 import jpql.domain.Team;
