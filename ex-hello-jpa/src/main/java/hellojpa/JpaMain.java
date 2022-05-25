@@ -1,5 +1,7 @@
 package hellojpa;
 
+import hellojpa.template.JpaTemplate;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -7,46 +9,36 @@ import javax.persistence.Persistence;
 
 public class JpaMain {
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
-        EntityManager em = emf.createEntityManager();
+        new JpaTemplate() {
+            @Override
+            public void execute(EntityManager em) {
+                Team team = new Team();
+                team.setName("teamA");
+                em.persist(team);
 
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
+                Member member = new Member();
+                member.setUserName("kim");
+                member.changeTeam(team);
+                em.persist(member);
 
-        try{
-
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUserName("kim");
-            member.changeTeam(team);
-            em.persist(member);
-
-            em.flush();
-            em.clear();
+                em.flush();
+                em.clear();
 
 //            Member findMember = em.find(Member.class, member.getId());
 //            System.out.println("member id = " + findMember.getId());
 //            System.out.println("member name = " + findMember.getUserName());
 
-            Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
-            System.out.println("team = " + findTeam);
+                Member findMember = em.find(Member.class, member.getId());
+                Team findTeam = findMember.getTeam();
+                System.out.println("team = " + findTeam);
 //            printMember(findMember);
-            // printMemberAndTeam(findMember);
+                // printMemberAndTeam(findMember);
 
-            tx.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tx.rollback();
-        } finally {
-            em.close();
-        }
+            }
+        }.transaction();
 
-        emf.close();
+
     }
 
     private static void printMember(Member findMember) {

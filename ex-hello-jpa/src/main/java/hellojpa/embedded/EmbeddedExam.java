@@ -1,6 +1,7 @@
 package hellojpa.embedded;
 
 import hellojpa.Member;
+import hellojpa.template.JpaTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,31 +13,20 @@ public class EmbeddedExam {
 
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
-        EntityManager em = emf.createEntityManager();
+        JpaTemplate jpaTemplate = new JpaTemplate() {
+            @Override
+            public void execute(EntityManager em) {
+                Member member = new Member();
+                member.setUserName("hello");
+                member.setHomeAddress(new Address("seoul", "2387", "1238-123"));
+                member.setWorkPeriod(new Period(LocalDateTime.now(), LocalDateTime.now()));
 
-        EntityTransaction tx = em.getTransaction();
+                em.persist(member);
+            }
+        };
 
-        tx.begin();
+        jpaTemplate.transaction();
 
-        try {
-
-            Member member = new Member();
-            member.setUserName("hello");
-            member.setHomeAddress(new Address("seoul", "2387", "1238-123"));
-            member.setWorkPeriod(new Period(LocalDateTime.now(), LocalDateTime.now()));
-
-            em.persist(member);
-
-            tx.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tx.rollback();
-        } finally {
-            em.close();
-        }
-
-        emf.close();
     }
 
 }

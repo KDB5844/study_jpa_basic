@@ -1,7 +1,6 @@
 package hellojpa.jpql;
 
 import hellojpa.Member;
-import hellojpa.Team;
 import hellojpa.template.JpaTemplate;
 
 import javax.persistence.EntityManager;
@@ -13,7 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class CreteriaEx1 {
+public class NativeQueryEx1 {
 
     public static void main(String[] args) {
 
@@ -37,9 +36,11 @@ public class CreteriaEx1 {
             }
         };
 
-
         jpaTemplate.transaction();
 
     }
+
+
+
 
 }

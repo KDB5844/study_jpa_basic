@@ -1,5 +1,7 @@
 package hellojpa.cascade;
 
+import hellojpa.template.JpaTemplate;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -9,39 +11,29 @@ public class CascadeExam {
 
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        JpaTemplate jpaTemplate = new JpaTemplate() {
+            @Override
+            public void execute(EntityManager em) {
+                Parent parent = new Parent();
 
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+                Child child1 = new Child();
+                Child child2 = new Child();
 
-        tx.begin();
-        try {
+                parent.addChild(child1);
+                parent.addChild(child2);
 
-            Parent parent = new Parent();
+                em.persist(parent);
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+                em.flush();
+                em.clear();
 
-            parent.addChild(child1);
-            parent.addChild(child2);
+                Parent findParent = em.find(Parent.class, parent.getId());
+                findParent.getChildList().remove(0);
+            }
+        };
 
-            em.persist(parent);
+        jpaTemplate.transaction();
 
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
-
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-
-        emf.close();
     }
 
 }

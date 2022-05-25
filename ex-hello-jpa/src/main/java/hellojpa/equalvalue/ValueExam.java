@@ -1,6 +1,9 @@
 package hellojpa.equalvalue;
 
 import hellojpa.embedded.Address;
+import hellojpa.template.JpaTemplate;
+
+import javax.persistence.EntityManager;
 
 public class ValueExam {
 

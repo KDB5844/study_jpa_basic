@@ -3,6 +3,7 @@ package hellojpa.jpql;
 
 import hellojpa.Member;
 import hellojpa.Team;
+import hellojpa.template.JpaTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,48 +14,38 @@ import java.util.List;
 public class JqplExam1 {
 
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
 
-        tx.begin();
+        JpaTemplate jpaTemplate = new JpaTemplate() {
+            @Override
+            public void execute(EntityManager em) {
+                Team team = new Team();
+                team.setName("TeamA");
 
-        try {
+                em.persist(team);
 
-            Team team = new Team();
-            team.setName("TeamA");
+                Member member1 = new Member();
+                member1.setUserName("kimSuck");
+                member1.setTeam(team);
 
-            em.persist(team);
+                em.persist(member1);
 
-            Member member1 = new Member();
-            member1.setUserName("kimSuck");
-            member1.setTeam(team);
+                em.flush();
+                em.clear();
 
-            em.persist(member1);
+                Member member2 = em.find(Member.class, member1.getId());
 
-            em.flush();
-            em.clear();
+                List<Member> result = em.createQuery(
+                        "select m from Member m where m.userName like '%kim%'"
+                        , Member.class).getResultList();
 
-            Member member2 = em.find(Member.class, member1.getId());
+                for (Member member : result) {
+                    System.out.println("member = " + member);
+                }
 
-            List<Member> result = em.createQuery(
-                    "select m from Member m where m.userName like '%kim%'"
-                    , Member.class).getResultList();
-
-            for (Member member : result) {
-                System.out.println("member = " + member);
+                String jpql = "";
             }
-
-            String jpql = "";
-
-            tx.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tx.rollback();
-        } finally {
-            em.close();
-        }
-        emf.close();
+        };
+        jpaTemplate.transaction();
     }
 
 }
