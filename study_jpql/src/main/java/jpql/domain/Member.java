@@ -5,6 +5,10 @@ import jpql.domain.enumeration.MemberType;
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(
+        name = "Member.findByUserName",
+        query = "select m from Member m where m.username=:username"
+)
 public class Member {
 
     public Member(String username, int age) {
